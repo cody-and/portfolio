@@ -8,6 +8,10 @@
   padding: 10px 20px;
   height: 60px; /* Fixed height */
   overflow: hidden; /* Hide overflowing content */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
 }
 
 .menu-icon {
@@ -43,3 +47,5 @@
 .menu-items li.active h2 {
   color: #ffd700; /* Change text color for active link */
 }
+
+

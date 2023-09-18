@@ -1,0 +1,33 @@
+/* Footer.css */
+.footer {
+  background-color: #333;
+  color: white;
+  padding: 10px 0;
+  text-align: center;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.footer p {
+  margin: 5px 0;
+}
+
+/* Style for the icons */
+.footer a {
+  text-decoration: none;
+  color: white;
+  margin: 0 10px; /* Add spacing between icons (adjust as needed) */
+  transition: color 0.2s; /* Smooth transition for text color changes */
+}
+
+/* Hover effect for text color */
+.footer a:hover {
+  color: #ffd700; /* Change text color on hover */
+}
+
+/* Active link effect for text color */
+.footer a.active {
+  color: #ffd700; /* Change text color for active link */
+}
