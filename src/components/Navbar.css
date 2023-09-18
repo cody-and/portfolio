@@ -1,0 +1,45 @@
+/* Navbar CSS */
+.navbar {
+  background-color: #333;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  height: 60px; /* Fixed height */
+  overflow: hidden; /* Hide overflowing content */
+}
+
+.menu-icon {
+  cursor: pointer;
+}
+
+.menu-items {
+  list-style-type: none; /* Remove bullet points */
+  display: flex; /* Display items in a horizontal row */
+  padding: 0; /* Remove default padding */
+  margin: 0; /* Remove default margin */
+}
+
+.menu-items li {
+  margin-right: 20px; /* Add spacing between list items (adjust as needed) */
+}
+
+.menu-items a {
+  text-decoration: none;
+  color: white;
+}
+
+.menu-items h2 {
+  margin: 0; /* Remove default margin on h2 elements */
+}
+
+/* Hover effect for text color */
+.menu-items li:hover h2 {
+  color: #ffd700; /* Change text color on hover */
+}
+
+/* Active link effect for text color */
+.menu-items li.active h2 {
+  color: #ffd700; /* Change text color for active link */
+}

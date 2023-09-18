@@ -1,41 +1,56 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import '../App.css';
-import about from '../assets/about-icon.svg';
-import education from '../assets/education-icon.svg'
-import menu from '../assets/menu-icon.svg'
-import techStack from '../assets/techstack-icon.svg'
-import resume from '../assets/resume-icon.svg'
+import React, { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import * as FaIcons from 'react-icons/fa6';
+import './Navbar.css';
 
 function Navbar() {
+  const location = useLocation();
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
+
   return (
-    <nav className="navbar">
-      <div>
-        <Link>
-          <img src={menu} alt="Menu Icon" width="25" height="25" />
-        </Link>
+    <div className="navbar">
+      <div className="menu-icon" onClick={toggleMenu}>
+        <FaIcons.FaBars />
       </div>
-      <div>
-        <Link>
-          <img src={about} alt="About Icon" width="25" height="25" />
-        </Link>
-      </div>
-      <div>
-        <Link>
-          <img src={education} alt="Education Icon" width="25" height="25" />
-        </Link>
-      </div>
-      <div>
-        <Link>
-          <img src={techStack} alt="Tech Stack Icon" width="25" height="25" />
-        </Link>
-      </div>
-      <div>
-        <Link>
-          <img src={resume} alt="Resume Icon" width="25" height="25" />
-        </Link>
-      </div>
-    </nav>
+      {menuOpen && (
+        <ul className="menu-items">
+          <li className={location.pathname === '/' ? 'active' : ''}>
+            <Link to="/">
+              <h2> <FaIcons.FaHouseChimney /> Home </h2>
+            </Link>
+          </li>
+          <li className={location.pathname === '/about' ? 'active' : ''}>
+            <Link to="/about">
+              <h2><FaIcons.FaCircleInfo /> About</h2>
+            </Link>
+          </li>
+          <li className={location.pathname === '/education' ? 'active' : ''}>
+            <Link to="/education">
+              <h2><FaIcons.FaBook /> Education</h2>
+            </Link>
+          </li>
+          <li className={location.pathname === '/tech-stack' ? 'active' : ''}>
+            <Link to="/tech-stack">
+              <h2><FaIcons.FaLaptopCode /> Tech Stack</h2>
+            </Link>
+          </li>
+          <li className={location.pathname === '/projects' ? 'active' : ''}>
+            <Link to="/projects">
+              <h2><FaIcons.FaRegFileCode /> Projects</h2>
+            </Link>
+          </li>
+          <li className={location.pathname === '/resume' ? 'active' : ''}>
+            <Link to="/resume">
+              <h2><FaIcons.FaFile /> Resume</h2>
+            </Link>
+          </li>
+        </ul>
+      )}
+    </div>
   );
 }
 

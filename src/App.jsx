@@ -1,39 +1,32 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'; 
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar';
-import About from './components/About';
-import './App.css'
+import About from './pages/About';
+import Education from './pages/Education';
+import Home from './pages/Home';
+import Projects from './pages/Projects';
+import Resume from './pages/Resume';
+import TechStack from './pages/TechStack';
 
-
-function TechStack() {
-  return <div>Tech Stack Page</div>;
-}
-
-function Education() {
-  return <div>Education Page</div>;
-}
-
-function Projects() {
-  return <div>Projects Page</div>;
-}
-
-function Resume() {
-  return <div>Resume Page</div>;
-}
 
 function App() {
   return (
-    <Router>
-      <Navbar />
-      <Routes> 
-        <Route path="/about" element={<About />} />
-        <Route path="/tech-stack" element={<TechStack />} />
-        <Route path="/education" element={<Education />} />
-        <Route path="/projects" element={<Projects />} />
-        <Route path="/resume" element={<Resume />} />
-      </Routes>
-    </Router>
+    <div>
+      <Router>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={ <Home />} />
+          <Route path="/about" element={ <About />} />
+          <Route path="/education" element={ <Education />} />
+          <Route path="/tech-stack" element={ <TechStack />} />
+          <Route path="/projects" element={ <Projects />} />
+          <Route path="/resume" element={ <Resume />} />
+        </Routes>
+      </Router>
+    </div>
   );
 }
 
 export default App;
+
+
