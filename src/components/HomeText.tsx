@@ -27,7 +27,7 @@ export default function HomeText() {
     set([])
     ref.current.push(setTimeout(() => set(['Cody', 'Anderson']), 2000))
     ref.current.push(setTimeout(() => set(['Software', 'Engineer']), 5000))
-    ref.current.push(setTimeout(() => set(['Cody', 'Anderson',]), 8000))
+    ref.current.push(setTimeout(() => set(['Cody', 'Anderson','Software', 'Engineer' ]), 8000))
   }, [])
 
   useEffect(() => {

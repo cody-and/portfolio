@@ -7,7 +7,7 @@ import '../App.css'
 
 function Home() {
   return (
-    <div className='content-container'>
+    <div className='content-container' id='home'>
       <HomeText />
     </div>
   );

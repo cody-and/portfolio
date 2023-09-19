@@ -1,14 +1,11 @@
 import React, { useRef, useCallback, useState, useEffect } from 'react';
 import { useGesture } from '@use-gesture/react';
 import { animated, useSpring, useSprings } from '@react-spring/web';
-import { Link } from 'react-router-dom';
+import { Link as ScrollLink, Element } from 'react-scroll'; // Import ScrollLink and Element from react-scroll
 import { globalStyles } from '../style/global';
 import { styled } from '../style/stiches.config';
-
 import menuIcon from '../assets/menu-icon.svg'
 import { FaCircleInfo, FaBook, FaHouseChimney, FaLaptopCode, FaCode, FaFileLines } from "react-icons/fa6";
-
-
 
 const BUTTON_SIZE = 60;
 
@@ -36,6 +33,16 @@ const Navbar = () => {
       y: 0,
     })
   );
+
+  const handlePointerDown = (isBackground) => (e) => {
+    if (isBackground && !isVisible.current) {
+      return;
+    }
+
+    if (onPointerDown) {
+      onPointerDown(e);
+    }
+  };
 
   useEffect(() => {
     if (avatarRefInitialPositions.current.length === 0) {
@@ -82,12 +89,10 @@ const Navbar = () => {
               });
             }
           },
-          config: (key) => {
-            return {
-              velocity: key === 'x' ? vx * dx : vy * dy,
-              decay: true,
-            };
-          },
+          config: (key) => ({
+            velocity: key === 'x' ? vx * dx : vy * dy,
+            decay: true,
+          }),
         });
       },
       onHover: ({ hovering }) => {
@@ -137,17 +142,6 @@ const Navbar = () => {
 
   const { onPointerEnter, onPointerLeave, onPointerDown, ...restGestures } = bindGestures();
 
-  const handlePointerDown = (isBackground) => (e) => {
-    if (isBackground && !isVisible.current) {
-      return;
-    }
-
-    if (onPointerDown) {
-      onPointerDown(e);
-    }
-  };
-
-
   return (
     <>
       <BlurredBackground
@@ -163,41 +157,41 @@ const Navbar = () => {
       >
         <GrabberButton style={{ opacity }}>
           <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M5.5 4.625C6.12132 4.625 6.625 4.12132 6.625 3.5C6.625 2.87868 6.12132 2.375 5.5 2.375C4.87868 2.375 4.375 2.87868 4.375 3.5C4.375 4.12132 4.87868 4.625 5.5 4.625ZM9.5 4.625C10.1213 4.625 10.625 4.12132 10.625 3.5C10.625 2.87868 10.1213 2.375 9.5 2.375C8.87868 2.375 8.375 2.87868 8.375 3.5C8.375 4.12132 8.87868 4.625 9.5 4.625ZM10.625 7.5C10.625 8.12132 10.1213 8.625 9.5 8.625C8.87868 8.625 8.375 8.12132 8.375 7.5C8.375 6.87868 8.87868 6.375 9.5 6.375C10.1213 6.375 10.625 6.87868 10.625 7.5ZM5.5 8.625C6.12132 8.625 6.625 8.12132 6.625 7.5C6.625 6.87868 6.12132 6.375 5.5 6.375C4.87868 6.375 4.375 6.87868 4.375 7.5C4.375 8.12132 4.87868 8.625 5.5 8.625ZM10.625 11.5C10.625 12.1213 10.1213 12.625 9.5 12.625C8.87868 12.625 8.375 12.1213 8.375 11.5C8.375 10.8787 8.87868 10.375 9.5 10.375C10.1213 10.375 10.625 10.8787 10.625 11.5ZM5.5 12.625C6.12132 12.625 6.625 12.1213 6.625 11.5C6.625 10.8787 6.12132 10.375 5.5 10.375C4.87868 10.375 4.375 10.8787 4.375 11.5C4.375 12.1213 4.87868 12.625 5.5 12.625Z"
-              fill="currentColor"
-              
-            />
+            {/* ... (your existing code for the grabber button) */}
           </svg>
         </GrabberButton>
         {avatarSprings.map((springs, index) => (
-      <Link
-        key={COLORS[index]}
-        to={CustomPaths[index]} // Use the custom path for each link
-        css={{
-          textDecoration: 'none', // Remove the default link underline
-          color: 'inherit', // Inherit text color from parent
-          '&:visited': {
-            color: 'inherit', // Remove visited link styles
-          },
-        }}
-      >
-        <AvatarIcon
-          ref={(ref) => (avatarRefs.current[index] = ref)}
-          css={{
-            backgroundColor: COLORS[index],
-            display: 'flex',
-            flexDirection: 'column', // Display icon and text in a column layout
-            justifyContent: 'center', // Center the content horizontally
-            alignItems: 'center', // Center the content vertically
-            padding: '8px', // Add padding to separate the icon and text
-          }}
-          style={springs}
-        >
-          {React.createElement(AvatarIcons[index], { size: 25 })} {/* You can adjust the size as needed */}
-        </AvatarIcon>
-      </Link>
-    ))}
+          <ScrollLink
+            key={COLORS[index]}
+            to={CustomPaths[index]} // Use the CustomPaths as the 'to' prop
+            spy={true} // Enable spy behavior
+            smooth={true} // Enable smooth scrolling
+            offset={-50} // Adjust the offset if needed
+            duration={800} // Set the duration of the scroll animation
+            css={{
+              textDecoration: 'none',
+              color: 'inherit',
+              '&:visited': {
+                color: 'inherit',
+              },
+            }}
+          >
+            <AvatarIcon
+              ref={(ref) => (avatarRefs.current[index] = ref)}
+              css={{
+                backgroundColor: COLORS[index],
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                padding: '8px',
+              }}
+              style={springs}
+            >
+              {React.createElement(AvatarIcons[index], { size: 25 })}
+            </AvatarIcon>
+          </ScrollLink>
+        ))}
         <FloatingButton
           ref={buttonRef}
           onPointerEnter={onPointerEnter}
@@ -208,7 +202,7 @@ const Navbar = () => {
           }}
         >
           <span>
-          <img src={menuIcon} alt="Menu Icon" style={{ width: '25px', height: '25px' }} />
+            <img src={menuIcon} alt="Menu Icon" style={{ width: '25px', height: '25px' }} />
           </span>
         </FloatingButton>
       </BlurredBackground>
@@ -269,12 +263,12 @@ const IconTexts = [
 ];
 
 const CustomPaths = [
-  '/', // Custom path for the first link
-  '/about', // Custom path for the second link
-  '/education', // Custom path for the third link
-  '/tech-stack', // Custom path for the fourth link
-  '/projects', // Custom path for the fifth link
-  '/resume', // Custom path for the sixth link
+  'home', // Custom path for the first link
+  'about', // Custom path for the second link
+  'education', // Custom path for the third link
+  'techstack', // Custom path for the fourth link
+  'projects', // Custom path for the fifth link
+  'resume', // Custom path for the sixth link
 ];
 
 const FloatingButton = styled(animated.div, {

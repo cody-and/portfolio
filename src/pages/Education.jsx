@@ -3,8 +3,7 @@ import Card from '../components/Card';
 
 function Education() {
   return (
-    <div>
-      <h1>Education</h1>
+    <div id='education'>
       <Card />
     </div>
   );

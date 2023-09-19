@@ -2,7 +2,7 @@ import React from 'react';
 
 function TechStack() {
   return (
-    <div>
+    <div id='techstack'>
       <h1>Tech Stack</h1>
     </div>
   );

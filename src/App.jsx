@@ -16,7 +16,21 @@ function App() {
     <div>
       <Router>
         <Navbar />
-        <Routes>
+        <Home />
+        <About />
+        <Education />
+        <TechStack />
+        <Projects />
+        <Resume />
+      
+
+
+
+
+
+
+
+        {/* <Routes>
           <Route path="/" element={ <Home />} />
           <Route path="/about" element={ <About />} />
           <Route path="/education" element={ <Education />} />
@@ -25,7 +39,7 @@ function App() {
           <Route path="/resume" element={ <Resume />} />
           <Route path="/test" element={ <Test />} />
 
-        </Routes>
+        </Routes> */}
         <Footer />
       </Router>
     </div>
