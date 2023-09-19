@@ -14,7 +14,7 @@
 .card-content {
   max-width: 80%; /* Adjust the maximum width of the card content as needed */
   padding: 20px;
-  background-color: #fff; /* Set a background color for the card content */
+  background-color: #efefef; /* Set a background color for the card content */
   border: 1px solid #ddd; /* Add a border to the card content */
   border-radius: 5px; /* Add rounded corners to the card content */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a box shadow to the card content */

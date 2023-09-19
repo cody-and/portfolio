@@ -12,7 +12,7 @@ import { FaCircleInfo, FaBook, FaHouseChimney, FaLaptopCode, FaCode, FaFileLines
 
 const BUTTON_SIZE = 60;
 
-const COLORS = ['red', 'green', 'blue', 'yellow', 'purple', 'orange'];
+const COLORS = ['#45c4f3', '#45c4f3', '#45c4f3', '#45c4f3', '#45c4f3', '#45c4f3'];
 
 const Navbar = () => {
   globalStyles();

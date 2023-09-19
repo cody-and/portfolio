@@ -1,6 +1,6 @@
 /* Footer.css */
 .footer {
-  background-color: #333;
+  background-color: #f9ad5b;
   color: white;
   padding: 10px 0;
   text-align: center;
@@ -24,10 +24,10 @@
 
 /* Hover effect for text color */
 .footer a:hover {
-  color: #ffd700; /* Change text color on hover */
+  color: #45c4f3; /* Change text color on hover */
 }
 
 /* Active link effect for text color */
 .footer a.active {
-  color: #ffd700; /* Change text color for active link */
+  color: #45c4f3; /* Change text color for active link */
 }

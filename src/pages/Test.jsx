@@ -1,16 +1,13 @@
 import React from 'react';
 import HomeText from '../components/HomeText';
-import '../App.css'
 
-
-
-
-function Home() {
+function Test() {
   return (
-    <div className='content-container'>
+    <div>
+      <h1>Test</h1>
       <HomeText />
     </div>
   );
 }
 
-export default Home;
+export default Test;

@@ -8,6 +8,7 @@ import Home from './pages/Home';
 import Projects from './pages/Projects';
 import Resume from './pages/Resume';
 import TechStack from './pages/TechStack';
+import Test from './pages/Test'
 
 
 function App() {
@@ -22,6 +23,8 @@ function App() {
           <Route path="/tech-stack" element={ <TechStack />} />
           <Route path="/projects" element={ <Projects />} />
           <Route path="/resume" element={ <Resume />} />
+          <Route path="/test" element={ <Test />} />
+
         </Routes>
         <Footer />
       </Router>
