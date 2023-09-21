@@ -14,10 +14,10 @@ export default function HomeText() {
     },
     enter: [
       { opacity: 1, height: 80, innerHeight: 80 },
-      { transform: 'perspective(600px) rotateX(180deg)', color: '##f9ad5b' },
+      { transform: 'perspective(600px) rotateX(180deg)', color: '#f9ad5b' },
       { transform: 'perspective(600px) rotateX(0deg)' },
     ],
-    leave: [{ color: '#454545' }, { innerHeight: 0 }, { opacity: 0, height: 0 }],
+    leave: [{ color: '#28b4d7' }, { innerHeight: 0 }, { opacity: 0, height: 0 }],
     update: { color: '#28b4d7' },
   })
 
@@ -25,9 +25,9 @@ export default function HomeText() {
     ref.current.forEach(clearTimeout)
     ref.current = []
     set([])
-    ref.current.push(setTimeout(() => set(['Cody', 'Anderson']), 2000))
+    ref.current.push(setTimeout(() => set(['Cody C.', 'Anderson']), 2000))
     ref.current.push(setTimeout(() => set(['Software', 'Engineer']), 5000))
-    ref.current.push(setTimeout(() => set(['Cody', 'Anderson','Software', 'Engineer' ]), 8000))
+    ref.current.push(setTimeout(() => set(['Cody C.', 'Anderson','Software', 'Engineer' ]), 8000))
   }, [])
 
   useEffect(() => {

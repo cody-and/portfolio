@@ -1,5 +1,4 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import About from './pages/About';
@@ -8,44 +7,40 @@ import Home from './pages/Home';
 import Projects from './pages/Projects';
 import Resume from './pages/Resume';
 import TechStack from './pages/TechStack';
-import Test from './pages/Test'
-
+import { animated, useTransition } from 'react-spring';
 
 function App() {
+  // Sections excluding Home and Navbar for transitions
+  const sections = [
+    { component: About },
+    { component: Education },
+    { component: TechStack },
+    { component: Projects },
+    { component: Resume },
+  ];
+
+  const transitions = useTransition(sections, {
+    from: { opacity: 0, transform: 'translateY(50px)' },
+    enter: { opacity: 1, transform: 'translateY(0)' },
+    leave: { opacity: 0, transform: 'translateY(50px)' },
+    config: { tension: 220, friction: 15 },
+    keys: (section) => section.component,
+  });
+
   return (
     <div>
-      <Router>
-        <Navbar />
-        <Home />
-        <About />
-        <Education />
-        <TechStack />
-        <Projects />
-        <Resume />
-      
-
-
-
-
-
-
-
-        {/* <Routes>
-          <Route path="/" element={ <Home />} />
-          <Route path="/about" element={ <About />} />
-          <Route path="/education" element={ <Education />} />
-          <Route path="/tech-stack" element={ <TechStack />} />
-          <Route path="/projects" element={ <Projects />} />
-          <Route path="/resume" element={ <Resume />} />
-          <Route path="/test" element={ <Test />} />
-
-        </Routes> */}
-        <Footer />
-      </Router>
+      <Navbar />
+      <Home /> {/* Render Home directly without transitions */}
+      <div style={{ paddingTop: '80px' }}>
+        {transitions((props, item) => (
+          <animated.section key={item.component} style={props}>
+            <item.component />
+          </animated.section>
+        ))}
+      </div>
+      <Footer />
     </div>
   );
 }
 
 export default App;
-
-

@@ -1,11 +1,11 @@
-import React, { useRef, useCallback, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useGesture } from '@use-gesture/react';
 import { animated, useSpring, useSprings } from '@react-spring/web';
-import { Link as ScrollLink, Element } from 'react-scroll'; // Import ScrollLink and Element from react-scroll
+import { Link as ScrollLink } from 'react-scroll';
 import { globalStyles } from '../style/global';
 import { styled } from '../style/stiches.config';
-import menuIcon from '../assets/menu-icon.svg'
-import { FaCircleInfo, FaBook, FaHouseChimney, FaLaptopCode, FaCode, FaFileLines } from "react-icons/fa6";
+import menuIcon from '../assets/menu-icon.svg';
+import { FaCircleInfo, FaBook, FaHouseChimney, FaLaptopCode, FaCode, FaFileLines } from 'react-icons/fa6';
 
 const BUTTON_SIZE = 60;
 
@@ -18,8 +18,10 @@ const Navbar = () => {
   const avatarRefs = useRef([]);
   const avatarRefInitialPositions = useRef([]);
   const containerRef = useRef(null);
+  const backgroundTimeoutRef = useRef(null);
+  const avatarTimeoutRef = useRef(null);
 
-  const isVisible = useRef(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const [{ x, y, opacity }, api] = useSpring(() => ({
     x: 0,
@@ -33,16 +35,6 @@ const Navbar = () => {
       y: 0,
     })
   );
-
-  const handlePointerDown = (isBackground) => (e) => {
-    if (isBackground && !isVisible.current) {
-      return;
-    }
-
-    if (onPointerDown) {
-      onPointerDown(e);
-    }
-  };
 
   useEffect(() => {
     if (avatarRefInitialPositions.current.length === 0) {
@@ -59,7 +51,7 @@ const Navbar = () => {
     }));
   }, []);
 
-  const getBounds = useCallback(() => {
+  const getBounds = () => {
     const { height, width } = containerRef.current.getBoundingClientRect();
 
     return {
@@ -68,10 +60,7 @@ const Navbar = () => {
       right: window.innerWidth - width,
       bottom: window.innerHeight - height,
     };
-  }, []);
-
-  const backgroundTimeoutRef = useRef(null);
-  const avatarTimeoutRef = useRef(null);
+  };
 
   const bindGestures = useGesture(
     {
@@ -95,40 +84,36 @@ const Navbar = () => {
           }),
         });
       },
-      onHover: ({ hovering }) => {
-        if (hovering) {
-          if (backgroundTimeoutRef.current) {
-            clearTimeout(backgroundTimeoutRef.current);
-          }
-          if (avatarTimeoutRef.current) {
-            clearTimeout(avatarTimeoutRef.current);
-          }
-
-          isVisible.current = true;
-
-          api.start({
-            opacity: 1,
-          });
-
-          avatarApi.start({
-            y: 0,
-          });
-        } else {
-          backgroundTimeoutRef.current = setTimeout(() => {
-            api.start({
-              opacity: 0,
-            });
-          }, 1000);
-
-          avatarTimeoutRef.current = setTimeout(() => {
-            avatarApi.start((i) => ({
-              y: avatarRefInitialPositions.current[i],
-              onRest: () => {
-                isVisible.current = false;
-              },
-            }));
-          }, 2000);
+      onPointerEnter: () => {
+        setIsMenuOpen(true);
+        if (backgroundTimeoutRef.current) {
+          clearTimeout(backgroundTimeoutRef.current);
         }
+        if (avatarTimeoutRef.current) {
+          clearTimeout(avatarTimeoutRef.current);
+        }
+
+        api.start({
+          opacity: 1,
+        });
+
+        avatarApi.start({
+          y: 0,
+        });
+      },
+      onPointerLeave: () => {
+        setIsMenuOpen(false);
+        backgroundTimeoutRef.current = setTimeout(() => {
+          api.start({
+            opacity: 0,
+          });
+        }, 1000);
+
+        avatarTimeoutRef.current = setTimeout(() => {
+          avatarApi.start((i) => ({
+            y: avatarRefInitialPositions.current[i],
+          }));
+        }, 10000);
       },
     },
     {
@@ -140,13 +125,22 @@ const Navbar = () => {
     }
   );
 
-  const { onPointerEnter, onPointerLeave, onPointerDown, ...restGestures } = bindGestures();
+  const handlePointerDown = (isBackground) => (e) => {
+    if (isBackground && !isMenuOpen) {
+      return;
+    }
+
+    if (onPointerDown) {
+      onPointerDown(e);
+    }
+  };
+
+  const { onPointerDown, ...restGestures } = bindGestures();
 
   return (
     <>
       <BlurredBackground
         ref={containerRef}
-        onPointerLeave={onPointerLeave}
         onPointerDown={handlePointerDown(true)}
         {...restGestures}
         style={{
@@ -157,17 +151,16 @@ const Navbar = () => {
       >
         <GrabberButton style={{ opacity }}>
           <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-            {/* ... (your existing code for the grabber button) */}
           </svg>
         </GrabberButton>
         {avatarSprings.map((springs, index) => (
           <ScrollLink
             key={COLORS[index]}
-            to={CustomPaths[index]} // Use the CustomPaths as the 'to' prop
-            spy={true} // Enable spy behavior
-            smooth={true} // Enable smooth scrolling
-            offset={-50} // Adjust the offset if needed
-            duration={800} // Set the duration of the scroll animation
+            to={CustomPaths[index]}
+            spy={true}
+            smooth={true}
+            offset={-50}
+            duration={800}
             css={{
               textDecoration: 'none',
               color: 'inherit',
@@ -194,7 +187,6 @@ const Navbar = () => {
         ))}
         <FloatingButton
           ref={buttonRef}
-          onPointerEnter={onPointerEnter}
           onPointerDown={handlePointerDown(false)}
           {...restGestures}
           style={{
@@ -211,12 +203,14 @@ const Navbar = () => {
 };
 
 const BlurredBackground = styled(animated.div, {
-  position: 'absolute',
-  padding: 10,
-  borderRadius: 20,
+  position: 'fixed',
+  top: '20px',
+  left: '20px',
+  padding: '10px',
+  borderRadius: '20px',
   display: 'flex',
   flexDirection: 'column',
-  gap: 8,
+  gap: '8px',
   backdropFilter: 'blur(8px)',
   alignItems: 'center',
   touchAction: 'none',
@@ -253,22 +247,13 @@ const AvatarIcons = [
   FaFileLines,
 ];
 
-const IconTexts = [
-  'Home', 
-  'About', 
-  'Education', 
-  'Tech Stack', 
-  'Projects', 
-  'Resume', 
-];
-
 const CustomPaths = [
-  'home', // Custom path for the first link
-  'about', // Custom path for the second link
-  'education', // Custom path for the third link
-  'techstack', // Custom path for the fourth link
-  'projects', // Custom path for the fifth link
-  'resume', // Custom path for the sixth link
+  'home',
+  'about',
+  'education',
+  'techstack',
+  'projects',
+  'resume',
 ];
 
 const FloatingButton = styled(animated.div, {

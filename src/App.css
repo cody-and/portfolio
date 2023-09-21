@@ -1,5 +1,5 @@
 .content-container {
-  background-color: #efefef; 
+  background-color: #504d4d; 
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -25,5 +25,24 @@
   border: solid 5px #f9ad5b;
 }
 
+.education-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100vh; 
+}
 
+.education-content{
+width: 25%; 
+padding: 20px;
+margin-left: 15%;
+background-color: #45c4f3; 
+box-shadow: 0 0 40px rgba(0, 0, 0, 0.2); 
+border: solid 5px #f9ad5b;
+}
 
+.card-img {
+  max-width: 100%;
+  height: auto;
+  justify-content: center;
+}
