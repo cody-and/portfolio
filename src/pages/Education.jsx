@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import UMNLogo from '../assets/UMN-Logo.svg';
 import { useSpring, animated } from '@react-spring/web';
-import '../App.css'
+import '../App.css';
 
 function Education() {
   const educationRef = useRef(null);
@@ -10,7 +10,14 @@ function Education() {
     from: { transform: 'translateX(100%)', opacity: 0 },
     to: { transform: 'translateX(0)', opacity: 1 },
     config: { duration: 1000 },
-    immediate: true,
+    // Remove immediate: true
+  });
+  
+  const imageAnimation = useSpring({
+    from: { transform: 'translateX(100%)', opacity: 0 },
+    to: { transform: 'translateX(0)', opacity: 1 },
+    config: { duration: 1000, delay: 200 }, // Delay the image animation
+    // Remove immediate: true
   });
 
   useEffect(() => {
@@ -20,6 +27,10 @@ function Education() {
           if (entry.isIntersecting) {
             console.log('Element is intersecting');
             educationAnimation.start({
+              transform: 'translateX(0)',
+              opacity: 1,
+            });
+            imageAnimation.start({
               transform: 'translateX(0)',
               opacity: 1,
             });
@@ -40,24 +51,23 @@ function Education() {
         observer.unobserve(educationRef.current);
       }
     };
-  }, [educationAnimation]);
+  }, [educationAnimation, imageAnimation]);
 
   return (
-    <animated.div
+    <div
       id='education'
       className='education-container'
-      style={educationAnimation}
       ref={educationRef}
     >
-      <div className='education-content'>
+      <animated.div className='education-content' style={educationAnimation}>
         <h1>Education</h1>
-        <img src={UMNLogo} alt="University of Minnesota Logo" className="card-img" />
+        <animated.img src={UMNLogo} alt="University of Minnesota Logo" className="card-img" style={imageAnimation} />
         <h3>University of Minnesota Full Stack Coding Bootcamp</h3>
         <p>
           The University of Minnesota Full Stack Coding Bootcamp is a comprehensive 12-week program that provides students with a deep understanding of full-stack web development. Covering both front-end and back-end technologies, it offers a hands-on learning experience with real-world projects. Its diverse student body and experienced instructors committed to staying up-to-date with the latest industry trends make it a valuable source of tech talent.
         </p>
-      </div>
-    </animated.div>
+      </animated.div>
+    </div>
   );
 }
 

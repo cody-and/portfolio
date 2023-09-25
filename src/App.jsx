@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import About from './pages/About';
@@ -8,35 +8,63 @@ import Projects from './pages/Projects';
 import Resume from './pages/Resume';
 import TechStack from './pages/TechStack';
 import { animated, useTransition } from 'react-spring';
+import { useInView } from 'react-intersection-observer';
 
 function App() {
-  // Sections excluding Home and Navbar for transitions
   const sections = [
-    { component: About },
-    { component: Education },
-    { component: TechStack },
-    { component: Projects },
-    { component: Resume },
+    {
+      component: About,
+      animation: {
+        from: { opacity: 0, transform: 'translateX(100%)' },
+        enter: { opacity: 1, transform: 'translateX(0)' },
+        leave: { opacity: 0, transform: 'translateX(100%)' },
+        config: { tension: 120, friction: 14 },
+      },
+    },
+    {
+      component: Education,
+      animation: {
+        from: { opacity: 0, transform: 'translateX(-100%)' },
+        enter: { opacity: 1, transform: 'translateX(0)' },
+        leave: { opacity: 0, transform: 'translateX(-100%)' },
+        config: { tension: 120, friction: 14 },
+      },
+    },
+    {
+      component: TechStack,
+      animation: {
+        from: { opacity: 0, transform: 'translateX(100%)' },
+        enter: { opacity: 1, transform: 'translateX(0)' },
+        leave: { opacity: 0, transform: 'translateX(100%)' },
+        config: { tension: 120, friction: 14 },
+      },
+    },
+    // Add other sections with animations here
   ];
 
   const transitions = useTransition(sections, {
-    from: { opacity: 0, transform: 'translateY(50px)' },
-    enter: { opacity: 1, transform: 'translateY(0)' },
-    leave: { opacity: 0, transform: 'translateY(50px)' },
-    config: { tension: 220, friction: 15 },
     keys: (section) => section.component,
+    from: (section) => section.animation.from,
+    enter: (section) => section.animation.enter,
+    leave: (section) => section.animation.leave,
+    config: (section) => section.animation.config,
   });
 
   return (
     <div>
       <Navbar />
-      <Home /> {/* Render Home directly without transitions */}
+      <Home />
       <div style={{ paddingTop: '80px' }}>
-        {transitions((props, item) => (
-          <animated.section key={item.component} style={props}>
-            <item.component />
-          </animated.section>
-        ))}
+        {transitions((props, item) => {
+          const [ref, inView] = useInView();
+          return (
+            <div ref={ref} style={{ opacity: inView ? 1 : 0 }}>
+              <animated.section style={props}>
+                <item.component />
+              </animated.section>
+            </div>
+          );
+        })}
       </div>
       <Footer />
     </div>
